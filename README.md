@@ -2,8 +2,8 @@
 
 Assalamualaikum & Salam Sejahtera
 
--PENGENALAN-
-HIP Kiosk merupakan sebuah projek inovasi yang dibangunkan oleh comptech@redztronic pada tahun 2018.Matlamat utama adalah untuk 
+#PENGENALAN#
+HIP Kiosk merupakan sebuah projek inovasi yang dibangunkan oleh comptech@redztronic pada tahun 2018. Matlamat utama adalah untuk 
 memperkenalkan PdP abad ke-2 (PAK-21) dan khusus untuk kegunaan sekolah rendah Malaysia.
 Coding diberikan secara PERCUMA dan sekolah boleh mengubahsuai coding mengikut inisiatif masing-masing.
 
