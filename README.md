@@ -13,6 +13,7 @@ Coding diberikan secara PERCUMA dan sekolah boleh mengubahsuai coding mengikut i
 Jenis coding & software yang digunakan dalam rekaan HIP Kiosk ialah:-
 * HTA - (HTML Aplication) GUI untuk program
 * JAVASCRIPT - Animasi interaktif dan element control
+* VBSCRIPT - Jalankan command untuk windows
 * C++ - (Arduino IDE)
 *  NIRCMD - (open source utiliti) 
 
