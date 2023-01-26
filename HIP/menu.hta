@@ -1,0 +1,78 @@
+<!doctype html>
+<HTA:APPLICATION ID="KiosK"
+     APPLICATIONNAME="KiosK"
+	 BORDER="none"  
+	 BORDERSTYLE="normal"
+	 CAPTION="yes"
+	 MAXIMIZEBUTTON="yes"
+	 MINIMIZEBUTTON="yes"
+	 SHOWINTASKBAR="no"
+	 SINGLEINSTANCE="no"
+	 SCROLL="no"
+	 SYSMENU="yes"
+	 VERSION=7.2
+	 WINDOWSTATE="maximize"
+	 contextMenu=no
+  >
+<head>
+<title>CARI DATA</title>
+<script type="text/javascript" src="./javascript/jquery-1.9.1.js"></script>
+
+<script>
+
+function tambah_data(){
+
+document.getElementById('div1').innerHTML= "" ;
+$.get("tambah_data.hta", function (data) {
+  $('#div1').html(data);
+});
+
+}
+
+
+
+
+function ubahdata(){
+
+document.getElementById('div1').innerHTML= "" ;
+$.get("ubah_data.hta", function (data) {
+   $('#div1').html(data);
+});
+
+}
+
+function caridata(){
+
+document.getElementById('div1').innerHTML= "" ;
+$.get("cari_data.hta", function (data) {
+   $('#div1').html(data);
+});
+
+}
+
+
+
+
+
+</script>
+
+
+</head>
+
+<body>
+
+<input type='button' value='TAMBAH DATA' onclick='tambah_data()'/>&nbsp&nbsp
+<input type='button' value='UBAH DATA' onclick='ubahdata()'/>&nbsp&nbsp
+<input type='button' value='CARI DATA' onclick='caridata()'/>&nbsp&nbsp
+<br>
+<br>
+<br>
+<div id='div1'>
+
+
+</div>
+
+
+</body>
+
+</html>

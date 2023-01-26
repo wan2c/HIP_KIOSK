@@ -1,0 +1,423 @@
+<!doctype html> <!-- kena letak benda penting ni..kalau x width & height untuk body x function -->
+<HTA:APPLICATION ID="KiosK"
+     APPLICATIONNAME="KiosK"
+	 BORDER="none"  
+	 BORDERSTYLE="normal"
+	 CAPTION="yes"
+	 MAXIMIZEBUTTON="yes"
+	 MINIMIZEBUTTON="yes"
+	 SHOWINTASKBAR="no"
+	 SINGLEINSTANCE="no"
+	 SCROLL="no"
+	 SYSMENU="yes"
+	 VERSION=7.2
+	 WINDOWSTATE="maximize"
+	 contextMenu=no
+  >
+
+<head>
+ <script src="./javascript/jquery-1.9.1.js"></script>
+ <link rel="stylesheet" href="css/table.css" type="text/css"/>	
+ <link rel="stylesheet" href="./css/jquery-ui.css" />
+ <script type="text/javascript" src="./javascript/jquery-ui.js"></script>
+ 
+ <script>
+ 
+ // ada 2 variable yang ditambah iaitu var kuiz dan var final . Digunakan untuk intermidiate antara slide dan kuiz.hta
+ var h = $(window).height();
+var w = $(window).width();
+var w2 = w/2;
+var h2 = h/2;
+var h3 = h2/2;
+var myjawapan = [];
+var statusjawab  = false;
+var final = false ;
+
+
+ 
+ </script>
+</head>
+
+<body>
+<div style='display:none;'>
+
+	<table border='1'>
+	<tr>
+		<td>detik :<div id='d_masa' >0</div></td>
+		<td>Soalan :<div id='d_page' >1</div></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+</table>
+
+</div>
+
+<div id='d_final'></div>
+<div id='d_kuiz'></div>
+
+<div id='d_A'></div>
+<div id='d_B'></div>
+<div id='d_C'></div>
+<div id='d_D'></div>
+<div id='d_submit'></div>
+</body>
+
+
+
+
+
+
+<script>
+
+var delaykuiz = setInterval(masa,200);
+var mynumkuiz = 0;
+var butangA = false;
+var butangB = false;
+var butangC = false;
+var butangD= false;
+var butangSubmit = false;
+var page = document.getElementById('d_page').innerHTML; 
+
+$(document).ready(function(){
+
+	document.getElementById('d_kuiz').innerHTML = "<img src='pic/kuiz4-1.png' width='"+w+"px;' height='"+h+"px;' ></img>";
+	document.getElementById('d_A').innerHTML = "<img id='i_A' src='button/ab.png' style='position:absolute; left:10px; top:"+(h2-50)+"px; ' width='100px' height='100px'></img>";
+	document.getElementById('d_B').innerHTML = "<img  id='i_B' src='button/bb.png' style='position:absolute; left:10px; top:"+(h3+h2)+"px; ' width='100px' height='100px'></img>";
+	document.getElementById('d_C').innerHTML = "<img  id='i_C' src='button/cb.png' style='position:absolute; right:10px; top:"+(h2-50)+"px; ' width='100px' height='100px'></img>";
+	document.getElementById('d_D').innerHTML = "<img  id='i_D' src='button/db.png' style='position:absolute; right:10px; top:"+(h3+h2)+"px; ' width='100px' height='100px'></img>";
+	document.getElementById('d_submit').innerHTML = "<img  id='i_submit' src='button/download.png' style='display:none; height:80px; width:200px; position:absolute; right:"+(w2-70)+"px; top:"+(h-80)+"px; ' ></img>";
+	document.body.style.background = "url(pic/bg.jpg)";
+	 
+
+
+	
+	
+	
+	//$("#i_A").fadeOut(3000);
+	//$("#i_A").animate({src: 'button/ah.png'});
+	
+	
+	
+		$(this).on('keypress', function(event) {
+	
+				if ((event.keyCode == 55)&&(final==false)) {  //keycode=7 A
+				butangA = true;
+				butangB = false;
+				butangC = false;
+				butangD = false;
+				butangSubmit = true;
+				document.getElementById('i_A').src= 'button/ab.png';
+				document.getElementById('i_B').src= 'button/bb.png';
+				document.getElementById('i_C').src= 'button/cb.png';
+				document.getElementById('i_D').src= 'button/db.png';
+				document.getElementById("i_submit").style.display = "block";
+				myjawapan[(page-1)] = "A";
+				statusjawab = true ;
+				}
+		
+				if ((event.keyCode == 51)&&(final==false))  {   //keycode=3 C
+				butangC = true;
+				butangA = false;
+				butangB = false;
+				butangD = false;
+				butangSubmit = true;
+				document.getElementById('i_A').src= 'button/ab.png';
+				document.getElementById('i_B').src= 'button/bb.png';
+				document.getElementById('i_C').src= 'button/cb.png';
+				document.getElementById('i_D').src= 'button/db.png';
+				document.getElementById("i_submit").style.display = "block";
+				myjawapan[(page-1)]  = "C";
+				statusjawab = true ;
+				}
+				
+				if ((event.keyCode == 54)&&(final==false))  {   //keycode=6 B
+				butangB = true;
+				butangA = false;
+				butangC = false;
+				butangD = false;
+				butangSubmit = true;
+				document.getElementById('i_A').src= 'button/ab.png';
+				document.getElementById('i_B').src= 'button/bb.png';
+				document.getElementById('i_C').src= 'button/cb.png';
+				document.getElementById('i_D').src= 'button/db.png';
+				document.getElementById("i_submit").style.display = "block";
+				myjawapan[(page-1)]  = "B";
+				statusjawab = true ;
+				
+				}
+		
+				if ((event.keyCode == 52)&&(final==false))  {   //keycode=4 D
+				butangD = true;
+				butangA = false;
+				butangB = false;
+				butangC = false;
+				butangSubmit = true;
+				document.getElementById('i_A').src= 'button/ab.png';
+				document.getElementById('i_B').src= 'button/bb.png';
+				document.getElementById('i_C').src= 'button/cb.png';
+				document.getElementById('i_D').src= 'button/db.png';
+				document.getElementById("i_submit").style.display = "block";
+				myjawapan[(page-1)]  = "D";
+				statusjawab = true ;
+				}
+				
+				if (event.keyCode == 53) {   //keycode=5
+				
+					if (statusjawab==true){
+						butangA = false;
+						butangB = false;
+						butangC = false;
+						butangD = false;
+						document.getElementById('i_A').src= 'button/ab.png';
+						document.getElementById('i_B').src= 'button/bb.png';
+						document.getElementById('i_C').src= 'button/cb.png';
+						document.getElementById('i_D').src= 'button/db.png';
+						
+						document.getElementById("i_submit").style.display = "none";
+						++page;
+						soalan(page);
+						statusjawab = false ;
+					
+					}
+				
+				}
+				
+				
+				
+	
+		})	
+		
+		
+		
+				 
+ });
+ 
+ function soalan(page){
+	if(page<11){
+		document.getElementById('d_kuiz').innerHTML = "<img src='pic/kuiz4-"+page+".png' width='"+w+"px;' height='"+h+"px;' ></img>";
+		document.getElementById('d_page').innerHTML = page ;
+	
+	}
+	
+	else{
+	
+	var xmlDoc = new ActiveXObject("Microsoft.XMLDOM")
+	var markah = 0;
+	xmlDoc.async="false"
+	xmlDoc.load("jawapan/module4.xml");
+	var jawapan1 = xmlDoc.getElementsByTagName("jawapan1").item(0).text ;
+	var jawapan2 = xmlDoc.getElementsByTagName("jawapan2").item(0).text ; 
+	var jawapan3 = xmlDoc.getElementsByTagName("jawapan3").item(0).text ;
+	var jawapan4 = xmlDoc.getElementsByTagName("jawapan4").item(0).text ;
+	var jawapan5 = xmlDoc.getElementsByTagName("jawapan5").item(0).text ;
+	var jawapan6 = xmlDoc.getElementsByTagName("jawapan6").item(0).text ;
+	var jawapan7 = xmlDoc.getElementsByTagName("jawapan7").item(0).text ;
+	var jawapan8 = xmlDoc.getElementsByTagName("jawapan8").item(0).text ;
+	var jawapan9 = xmlDoc.getElementsByTagName("jawapan9").item(0).text ;
+	var jawapan10 = xmlDoc.getElementsByTagName("jawapan10").item(0).text ;
+	
+	var txt = "";
+	txt +=  "<center><h1><b>Max The Tortoise</b></h1></center>";
+	txt +=  "<table  class='CSS_Table_Example'>";
+	txt +=  "<tr>";
+	txt +=  "<td>No. Question</td>";
+	txt +=  "<td>Q1</td>";
+	txt +=  "<td>Q2</td>";
+	txt +=  "<td>Q3</td>";
+	txt +=  "<td>Q4</td>";
+	txt +=  "<td>Q5</td>";
+	txt +=  "<td>Q6</td>";
+	txt +=  "<td>Q7</td>";
+	txt +=  "<td>Q8</td>";
+	txt +=  "<td>Q9</td>";
+	txt +=  "<td>Q10</td>";
+	txt +=  "</tr>";
+	txt +=  "<tr>";
+	txt +=  "<td>Your Answer:</td>";
+	txt +=  "<td>"+myjawapan[0]+"</td>";
+	txt +=  "<td>"+myjawapan[1]+"</td>";
+	txt +=  "<td>"+myjawapan[2]+"</td>";
+	txt +=  "<td>"+myjawapan[3]+"</td>";
+	txt +=  "<td>"+myjawapan[4]+"</td>";
+	txt +=  "<td>"+myjawapan[5]+"</td>";
+	txt +=  "<td>"+myjawapan[6]+"</td>";
+	txt +=  "<td>"+myjawapan[7]+"</td>";
+	txt +=  "<td>"+myjawapan[8]+"</td>";
+	txt +=  "<td>"+myjawapan[9]+"</td>";
+	txt +=  "</tr>";
+	txt +=  "<tr>";
+	txt +=  "<td>Correct Answer :</td>";
+	txt +=  "<td>"+jawapan1+"</td>";
+	txt +=  "<td>"+jawapan2+"</td>";
+	txt +=  "<td>"+jawapan3+"</td>";
+	txt +=  "<td>"+jawapan4+"</td>";
+	txt +=  "<td>"+jawapan5+"</td>";
+	txt +=  "<td>"+jawapan6+"</td>";
+	txt +=  "<td>"+jawapan7+"</td>";
+	txt +=  "<td>"+jawapan8+"</td>";
+	txt +=  "<td>"+jawapan9+"</td>";
+	txt +=  "<td>"+jawapan10+"</td>";
+	txt +=  "</tr>";
+	txt +=  "</table>";
+	
+		if(myjawapan[0]==jawapan1){
+		 markah = markah + 1;
+		
+		}
+		if(myjawapan[1]==jawapan2){
+		 markah = markah + 1;
+		
+		}
+		if(myjawapan[2]==jawapan3){
+		 markah = markah + 1;
+		
+		}
+		if(myjawapan[3]==jawapan4){
+		 markah = markah + 1;
+		
+		}
+		if(myjawapan[4]==jawapan5){
+		 markah = markah + 1;
+		
+		}
+		if(myjawapan[5]==jawapan6){
+		 markah = markah + 1;
+		
+		}
+		if(myjawapan[6]==jawapan7){
+		 markah = markah + 1;
+		
+		}
+		if(myjawapan[7]==jawapan8){
+		 markah = markah + 1;
+		
+		}
+		if(myjawapan[8]==jawapan9){
+		 markah = markah + 1;
+		
+		}
+		if(myjawapan[9]==jawapan10){
+		 markah = markah + 1;
+		
+		}
+		
+		var peratus = (markah/10)*100;
+		
+		txt +=  "<br><br><table class='CSS_Table_Example'><tr><td>Your Total Score is  &nbsp&nbsp<font size='200px;'>"+peratus+"%</font></td></tr></table>";
+		
+	   if (peratus>=80){
+         	 txt +=  " <div id='effect' style='position:absolute; left:"+(w2-180)+"px; top:"+(h2-10)+"px;  width:350px;' height:350px;'> <img src='pic/gold.png' width='350px' height='350px'></img></div>";
+	   
+	   }
+		if ((peratus<80)&&(peratus>=50)){
+         	 txt +=  " <div id='effect' style='position:absolute; left:"+(w2-180)+"px; top:"+(h2-10)+"px;  width:350px;' height:350px;'> <img src='pic/bronze.png' width='350px' height='350px'></img></div>";
+	   
+	   }
+		if (peratus<50){
+         	 txt +=  " <div id='effect' style='position:absolute; left:"+(w2-180)+"px; top:"+(h2-10)+"px;  width:350px;' height:350px;'> <img src='pic/silver.png' width='350px' height='350px'></img></div>";
+	   
+	   }
+	   
+		
+		document.getElementById('d_kuiz').innerHTML = "<div style=' width:"+w+"px; height:"+h+"px;  color:yellow;                      ' >"+txt+"</div>";
+		document.getElementById('d_A').style.display="none";
+		document.getElementById('d_B').style.display="none";
+		document.getElementById('d_C').style.display="none";
+		document.getElementById('d_D').style.display="none";
+		document.getElementById("i_submit").style.display = "none";
+		mynumkuiz = 0;
+		final = true;
+		
+	
+	}
+	
+ }
+ 
+ 
+ 
+ 
+ function masa(){
+ 	++mynumkuiz;	
+		document.getElementById('d_masa').innerHTML = mynumkuiz;
+		kelip(mynumkuiz);
+		if (final==true){
+			 $( "#effect" ).effect( "bounce", 5000 );
+			if (mynumkuiz==40){
+				mynumkuiz=0;
+				final = false;
+				location.reload();
+				
+				
+			}
+		
+		}
+ 
+ }
+	
+function kelip(data){
+		
+		if (butangA==true){
+			if (data % 2 == 0){
+			document.getElementById('i_A').src= 'button/ab.png';
+			}
+			else {
+				document.getElementById('i_A').src= 'button/am.png';
+			}
+		
+		}
+		
+		
+		if (butangB==true){
+			if (data % 2 == 0){
+			document.getElementById('i_B').src= 'button/bb.png';
+			}
+			else {
+				document.getElementById('i_B').src= 'button/bm.png';
+			}
+		
+		}
+		
+		if (butangC==true){
+			if (data % 2 == 0){
+			document.getElementById('i_C').src= 'button/cb.png';
+			}
+			else {
+				document.getElementById('i_C').src= 'button/cm.png';
+			}
+		
+		}
+		
+		if (butangD==true){
+			if (data % 2 == 0){
+			document.getElementById('i_D').src= 'button/db.png';
+			}
+			else {
+				document.getElementById('i_D').src= 'button/dm.png';
+			}
+		
+		}
+		
+		
+		if (butangSubmit==true){
+			if (data % 2 == 0){
+			document.getElementById('i_submit').src= 'button/download2.png';
+			}
+			else {
+				document.getElementById('i_submit').src= 'button/download.png';
+			}
+		
+		}
+		
+		
+
+
+
+}
+
+</script>
+
+
+
+
+

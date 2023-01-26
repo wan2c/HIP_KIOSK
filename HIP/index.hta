@@ -1,0 +1,633 @@
+<!doctype html>
+<HTA:APPLICATION ID="KiosK"
+     APPLICATIONNAME="KiosK"
+	 BORDER="none"  
+	 BORDERSTYLE="normal"
+	 CAPTION="yes"
+	 MAXIMIZEBUTTON="yes"
+	 MINIMIZEBUTTON="yes"
+	 SHOWINTASKBAR="no"
+	 SINGLEINSTANCE="no"
+	 SCROLL="no"
+	 SYSMENU="yes"
+	 VERSION=7.2
+	 WINDOWSTATE="maximize"
+	 contextMenu=no
+  >
+<head>
+<!-- tukar border untuk hta full screen-- thin @ normal @ none -->
+ <script src="./javascript/jquery-1.9.1.js"></script>
+ <script src="./javascript/jquery.slides.min.js"></script>
+ <link rel="stylesheet" href="./css/jquery-ui.css" />
+ <script type="text/javascript" src="./javascript/jquery-ui.js"></script>
+ 
+ 
+ 
+ <meta charset="utf-8">
+  
+
+  <!-- SlidesJS Required (if responsive): Sets the page width to the device width. -->
+  <meta name="viewport" content="width=device-width">
+  <!-- End SlidesJS Required -->
+
+  <!-- SlidesJS Required: These styles are required if you'd like a responsive slideshow -->
+  <style>
+
+  
+    /* Prevent the slideshow from flashing on load */
+    #slides {
+      display: none
+	  
+	 
+    }
+
+	 
+	
+    /* Center the slideshow */
+    .container {
+      margin: 0 auto
+    }
+
+	
+	 .slidesjs-pagination {
+       display: none
+    }
+	
+  
+
+    /* Media quires for a responsive layout */
+
+    /* For tablets & smart phones */
+    @media (max-width: 720px) {
+      body {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      .container {
+        width: auto
+      }
+    }
+
+    /* For smartphones */
+    @media (max-width: 480px) {
+      .container {
+        width: auto
+      }
+    }
+
+    /* For smaller displays like laptops */
+    @media (min-width: 720px) and (max-width: 720) {
+      .container {
+        width: 720
+      }
+    }
+
+    /* For larger displays */
+    @media (min-width: 720) {
+      .container {
+        width: 720
+      }
+    }
+  </style>
+  <!-- SlidesJS Required: -->
+<script language="vbscript">
+' Ini adalah comment
+ Dim oShell : Set oShell = CreateObject("WScript.Shell")
+'oShell.Run "taskkill /F /im explorer.exe",0, True
+
+window.setInterval "setfocus()", 5000
+
+Function setfocus
+
+ window.focus()
+
+End Function
+
+
+</script>
+  
+  
+  
+  </head>
+<body bgcolor='black'>
+<div id='platform' >
+			<img id="front" src="pic/front.png" style="width:auto; height:auto; position:absolute;  bottom:5px; right:0px;">
+			<img id="img_canvas" src="pic/intro.png" style="width:100%;height:auto; ">
+
+			<div id='video' ></div>
+
+			<embed id="w_welcome" src='wav/welcome.wav' autostart='false' loop='false' width='0' height='0'></embed>
+			<div id='div_audio1'><embed id='w_m1' src='wav/module_1.wav' autostart='false' loop='false' width='0' height='0'></embed></div>
+			<embed id="w_m2" src='wav/module_2.wav' autostart='false' loop='false' width='0' height='0'></embed>
+			<embed id="w_m3" src='wav/module_3.wav' autostart='false' loop='false' width='0' height='0'></embed>
+			<embed id="w_m4" src='wav/module_4.wav' autostart='false' loop='false' width='0' height='0'></embed>
+			<embed id="w_m5" src='wav/module_5.wav' autostart='false' loop='false' width='0' height='0'></embed>
+
+			<br>
+			<br>
+			<br>
+
+
+
+			<div id='ar_kiri' style=" display:none; position:absolute;"> <img src="gif/left-arrow-12.gif" alt="kiri" height='100'></div>
+			<div id='ar_kanan' style="display:none; position:absolute;"><img src="gif/right-arrow-25.gif" alt="kanan" height='100'> </div>	
+			  <div class="container" id='mycontainer' style='width:800px; height:600px; '>
+				
+
+					<div id="slides" style='display:none;'>
+				
+					<input type='hidden' id='b1' value='<' class="slidesjs-previous slidesjs-navigation"  /> 
+					  <img src="pic/1.png" >
+					  <img src="pic/2.png" >
+					  <img src="pic/3.png" >
+					  <img src="pic/4.png" >
+					  <img src="pic/5.png" >
+					<input type='hidden'  id='b2' value='>'  class="slidesjs-next slidesjs-navigation"  />
+					</div>
+				
+
+
+			  </div>
+				
+			  
+			<div id='noti' style='  filter: alpha(opacity=50); width:720px; height:60px; position:absolute;   background-color:black; display:none; font-size:3em; text-align:center; color:white; ' ></div>
+
+
+			   <div id='indikator' style='display:none;'>
+					<table border='1'>
+						<tr>
+							<td><div style='font-size:50;' id='pamer'>0</div></td>
+								<td><div style='font-size:50;' id='ganjil'>0</div></td>
+							<td><div id="slidesjs-log">Slide <span id='pn' class="slidesjs-slide-number">1</span> of 5</div></td>
+							<td><input type='text' id='video_apa' name='video_apa' value='intro' /></td>
+						</tr>
+					</table>
+
+					
+					
+					
+				</div>
+				<div id='d_enter'></div>
+
+			 <script>
+			 var sensor = false ;
+			 var kuiz = false;
+			 var delay = setInterval(up,500);
+			var mynum = 0;
+			var delayaudio = 0;
+			var disable = false;  //untuk able@disable next page (betulkan debug yang boleh meloncat next page while playing)
+			var disabledelay = false;  //untuk disable audio module yang akan ulang setiap 2 saat
+			var disablevideo = false; //untuk disable video play
+			var disableenter = false; //untuk disable butang ke 3 
+			var h = $(window).height();
+			var h2 = h/2;
+			var w = $(window).width();
+			var w2 = w/2;
+			document.getElementById('img_canvas').style.height= h +'px';
+			document.getElementById('img_canvas').style.weight= w +'px';
+			document.getElementById('noti').style.left= (w2-360)+"px";
+			document.getElementById('noti').style.top = (h-200)+"px";
+			document.getElementById('mycontainer').style.height= (h-200) +'px';
+			document.getElementById('mycontainer').style.width= (w-200) +'px';
+			document.getElementById('ar_kiri').style.left = '10px';   
+			document.getElementById('ar_kiri').style.top = h2;  
+			document.getElementById('ar_kanan').style.right = '10px';
+			document.getElementById('ar_kanan').style.top = h2;  
+				$(function() {
+						
+					
+					 $('#slides').slidesjs({
+							width: (w-200),
+							height: (h-200),
+							navigation: false,
+							callback: {
+								complete: function(number) {
+									$('#slidesjs-log .slidesjs-slide-number').text(number);
+								}
+							}
+
+							
+						  });
+			   
+					$(this).on('keypress', function(event) {
+					
+					 if (event.keyCode == 32) { //keycode = space
+							sensor = true ;	
+							var shell = new ActiveXObject("WScript.Shell");
+							shell.run("nircmd.exe setcursor 0 0");		
+						
+					}
+					
+					
+					 if (event.keyCode == 96) { //keycode = `
+							var shell = new ActiveXObject("WScript.Shell");
+							shell.run("nircmd.exe monitor off");
+							location.reload();	
+								
+						
+					}
+					
+					
+					if (event.keyCode == 56) { //keycode = 8
+							var shell = new ActiveXObject("WScript.Shell");
+							shell.run("shutdown.exe /p");
+							
+								
+						
+					}
+					
+					
+					//49 ==> 1, 50 ==> 2 , 51 ==> 3, 52 ==> 4 , 53 ==> 5, 54 ==> 6, 55 ==> 7 , 
+					
+					if ((event.keyCode == 55)||(event.keyCode == 54)) { //keycode = 7 & 6
+							if(disable==false){
+								$('#b1').trigger('click');  //trigger class slide kiri
+							}
+						
+							
+					}
+					
+					 if ((event.keyCode == 51)||(event.keyCode == 52)) { // keycode = 3 & 4
+							if(disable==false){
+								$('#b2').trigger('click'); //trigger class slide kanan
+							}
+							
+							
+							
+					}
+					
+					if (event.keyCode == 53) {   //keycode = 5
+						
+						if (kuiz==false){
+						
+								var pagenum = document.getElementById('pn').innerHTML ;
+								
+								if (disableenter == false){
+
+									if (pagenum==1){
+											if(disablevideo==false){
+												disable = true; //disable next page
+												document.getElementById("slides").style.display = "none"; //none @ block
+												document.getElementById('video_apa').value = "anis_hen";
+												mynum = 5; //starting play video pada detik ke -5 
+												document.getElementById('video').innerHTML = "<embed src='mp4/anis_hen.mp4' width='"+(w-30)+"px;' height='"+h+"px;'  autostart='true' type='video/mp4'>";
+												disableenter = true;
+											}
+											
+									}
+								
+									if (pagenum==2){
+											disable = true;
+											document.getElementById("slides").style.display = "none"; //none @ block
+											document.getElementById('video_apa').value = "shepard";
+											mynum = 5; //starting play video pada detik ke -5 
+											document.getElementById('video').innerHTML = "<embed src='mp4/shepard.mp4' width='"+(w-30)+"px;' height='"+h+"px;' autostart='true' type='video/mp4'>";
+											disableenter = true;
+											
+									}
+								
+									if (pagenum==3){
+											disable = true;
+											document.getElementById("slides").style.display = "none"; //none @ block
+											document.getElementById('video_apa').value = "prepared";
+											mynum = 5; //starting play video pada detik ke -5 
+											document.getElementById('video').innerHTML = "<embed src='mp4/be_prepared.mp4' width='"+(w-30)+"px;' height='"+h+"px;' autostart='true' type='video/mp4'>";
+											disableenter = true;
+											
+									}
+								
+									if (pagenum==4){
+											disable = true;
+											document.getElementById("slides").style.display = "none"; //none @ block
+											document.getElementById('video_apa').value = "tortoise";
+											mynum = 5; //starting play video pada detik ke -5 
+											document.getElementById('video').innerHTML = "<embed src='mp4/max_the_tortoise.mp4' width='"+(w-30)+"px;' height='"+h+"px;' autostart='true' type='video/mp4'>";
+											disableenter = true;
+											
+									}
+								
+									if (pagenum==5){
+											disable = true;
+											document.getElementById("slides").style.display = "none"; //none @ block
+											document.getElementById('video_apa').value = "camel";
+											mynum = 5; //starting play video pada detik ke -5 
+											document.getElementById('video').innerHTML = "<embed src='mp4/the_camel_and_the_goat.mp4' width='"+(w-30)+"px;' height='"+h+"px;' autostart='true' type='video/mp4'>";
+											disableenter = true;
+											
+									}
+
+									
+								
+								}
+						
+						
+							}
+						
+			//////////////////////////			
+					}
+					
+					
+					
+					//debug purpose
+					/*
+							if (event.keyCode == 52) { 
+							alert('4')
+							}
+					
+							if (event.keyCode == 53) { 
+							alert('5')
+							}
+					
+							if (event.keyCode == 54) { 
+							alert('6')
+							}
+					*/
+					
+					
+					
+					
+				})
+
+
+				/////////////animasi arrow////////////////////
+					
+						/*
+						 var div = $("#ar_kanan");
+					startAnimation();
+						function startAnimation(){
+						   div.fadeOut({fontSize: "3em"});
+							div.fadeIn({fontSize: "4em"});
+							 div.toggleClass("greyish");
+							div.animate({fontSize: "3em"});
+							div.animate({fontSize: "4em"}, "slow", startAnimation);
+						}
+						*/
+						
+
+			///////////////////////////////////////////////////////
+
+			   });
+				
+				
+				function up(){	
+				
+								
+						if (sensor==true){		
+								
+								++mynum;	
+								document.getElementById('pamer').innerHTML = mynum;
+								odd(mynum);
+								var video_stat = document.getElementById('video_apa').value
+									
+									if(video_stat=='intro'){
+									
+									$("#front").animate({right: "-100px"}, 500);
+									$("#front").animate({left: "-100px"}, 500);
+									//$( "#front" ).effect( "shake", 5000 ); //jquery ui effect daa
+									document.getElementById("slides").style.display = "none" ; //none @ block  hilangkan slide 
+									document.getElementById("ar_kanan").style.display = 'none' ;
+									document.getElementById("ar_kiri").style.display = "none"  ;
+									document.getElementById("noti").style.display = "none" ;
+									disable = true; //disable cursor next page
+									disabledelay = true ; //disable audio module
+									disablevideo = true ; //disable play video 
+								 
+									
+										
+											if(mynum==3){
+													
+										
+										document.getElementById('w_welcome').play();
+										$("#front").animate({bottom: "-200px"}, 1000);
+										}
+										
+										
+										if(mynum==5){
+													
+										$("#img_canvas").fadeOut(2000);
+										
+									
+										}
+										
+										
+										if(mynum==9){
+											disable = false;
+											disabledelay = false ;
+											disablevideo = false ;
+											document.getElementById('video_apa').value = 'menu';
+											document.getElementById("img_canvas").style.display = "none";  //hilangkan intro.png
+											document.getElementById("slides").style.display = "block";  //munculkan slide
+											document.getElementById("ar_kanan").style.display = 'block' ;
+											document.getElementById("ar_kiri").style.display = "block"  ;
+											document.getElementById("noti").style.display = "block" ;
+											document.body.style.background = "url(pic/bg.jpg)";
+											document.getElementById('d_enter').innerHTML = "<img  id='i_submit' src='button/enter.png' style='display:block; height:80px; width:200px; position:absolute; right:"+(w2-70)+"px; top:"+(h-80)+"px; ' ></img>";
+										}
+									}
+									
+								
+										if(video_stat=='anis_hen'){
+											document.getElementById('i_submit').style.display = "none";
+											
+											if (mynum==98){  //masa play sampai detik ke brapa sebelum tutup - 8 saat intro (ori 50 saat tapi kita percepatkan interval maka x2 = 100
+											document.getElementById("slides").style.display = "block"; //none @ block
+											document.getElementById('video').innerHTML = "";
+											document.getElementById('video_apa').value = 'menu';
+											mynum=0;
+											disable = false;
+											disableenter = false;
+											///pergi ke kuiz
+											kuiz = true ;
+											document.getElementById('platform').innerHTML= "" ;
+											clearInterval(delay); //stopkan masa interval
+											$.get("kuiz1.hta", function (data) {
+											   $('#platform').html(data);
+											});
+											
+											
+											
+											
+											}
+											
+										}
+									
+										if(video_stat=='shepard'){
+											document.getElementById('i_submit').style.display = "none";
+											if (mynum==285){  //masa play sampai detik ke brapa sebelum tutup --ori 285
+											document.getElementById("slides").style.display = "block"; //none @ block
+											document.getElementById('video').innerHTML = "";
+											document.getElementById('video_apa').value = 'menu';
+											mynum=0;
+											disable = false;
+											disableenter = false;
+											///pergi ke kuiz
+											kuiz = true ;
+											document.getElementById('platform').innerHTML= "" ;
+											clearInterval(delay); //stopkan masa interval
+											$.get("kuiz2.hta", function (data) {
+											   $('#platform').html(data);
+											});
+										
+										
+											}
+										}
+									
+										if(video_stat=='prepared'){
+											document.getElementById('i_submit').style.display = "none";
+											if (mynum==578){  //masa play sampai detik ke brapa sebelum tutup --ori 574
+											document.getElementById("slides").style.display = "block"; //none @ block
+											document.getElementById('video').innerHTML = "";
+											document.getElementById('video_apa').value = 'menu';
+											mynum=0;
+											disable = false;
+											disableenter = false;
+											///pergi ke kuiz
+											kuiz = true ;
+											document.getElementById('platform').innerHTML= "" ;
+											clearInterval(delay); //stopkan masa interval
+											$.get("kuiz3.hta", function (data) {
+											   $('#platform').html(data);
+											});
+											
+										
+											}
+										}
+									
+									
+										if(video_stat=='tortoise'){
+											document.getElementById('i_submit').style.display = "none";
+											if (mynum==315){  //masa play sampai detik ke brapa sebelum tutup  --ori 310
+											document.getElementById("slides").style.display = "block"; //none @ block
+											document.getElementById('video').innerHTML = "";
+											document.getElementById('video_apa').value = 'menu';
+											mynum=0;
+											disable = false;
+											disableenter = false;
+											///pergi ke kuiz
+											kuiz = true ;
+											document.getElementById('platform').innerHTML= "" ;
+											clearInterval(delay); //stopkan masa interval
+											$.get("kuiz4.hta", function (data) {
+											   $('#platform').html(data);
+											});
+											
+											
+											}
+										}
+									
+										if(video_stat=='camel'){
+											document.getElementById('i_submit').style.display = "none";
+											if (mynum==347){  //masa play sampai detik ke brapa sebelum tutup -- ori 346
+											document.getElementById("slides").style.display = "block"; //none @ block
+											document.getElementById('video').innerHTML = "";
+											document.getElementById('video_apa').value = 'menu';
+											mynum=0;
+											disable = false;
+											disableenter = false;
+											///pergi ke kuiz
+											kuiz = true ;
+											document.getElementById('platform').innerHTML= "" ;
+											clearInterval(delay); //stopkan masa interval
+											$.get("kuiz5.hta", function (data) {
+											   $('#platform').html(data);
+											});
+											
+											
+											}
+										}
+									
+						
+							}
+							
+							else{
+									disable = true; //disable cursor next page
+									disabledelay = true ; //disable audio module
+									disablevideo = true ; //disable play video 
+							
+							
+							}
+					
+				
+				}
+				
+				
+			function odd(data){
+						
+						var video_stat = document.getElementById('video_apa').value
+						
+						if (data % 2 == 0){
+								document.getElementById("ganjil").style.color='red';
+								if (video_stat=='menu') {
+									 delayaudio++;
+									document.getElementById("ganjil").innerHTML = delayaudio;
+									var pagenum = document.getElementById('pn').innerHTML ;
+									if (pagenum==1){
+											document.getElementById('noti').innerHTML= "<b>MODULE 1</b>";								
+									}
+									if (pagenum==2){
+											document.getElementById('noti').innerHTML= '<b>MODULE 2</b>';								
+									}
+									if (pagenum==3){
+											 document.getElementById('noti').innerHTML= '<b>MODULE 3</b>';								 
+									}
+									if (pagenum==4){
+											 document.getElementById('noti').innerHTML= '<b>MODULE 4</b>';								 
+									}
+									if (pagenum==5){
+											document.getElementById('noti').innerHTML= '<b>MODULE 5</b>';								
+									}
+									
+									
+									
+								// setiap 4 saat akan padam div_audio
+									if(delayaudio==4){  //detik 4 saat
+										 playaudiomodule() ;
+										delayaudio = 0;
+									
+									}
+								
+									
+									
+								}
+								
+								
+								
+						}
+						else{
+							
+								document.getElementById("ganjil").style.color='blue';
+								
+							
+						}
+					}	
+
+			function playaudiomodule() {
+				var pagenum = document.getElementById('pn').innerHTML ;
+				if (disabledelay==false){
+					if (pagenum==1){
+								 document.getElementById('w_m1').play(); 					
+					}
+					if (pagenum==2){
+								 document.getElementById('w_m2').play(); 
+					}
+					if (pagenum==3){
+								 document.getElementById('w_m3').play(); 
+					}
+					if (pagenum==4){
+								 document.getElementById('w_m4').play(); 
+					}
+					if (pagenum==5){
+								document.getElementById('w_m5').play(); 
+					}
+				
+				}
+				
+
+
+			}
+					
+				
+			  </script>
+</div>
+</body>
+
