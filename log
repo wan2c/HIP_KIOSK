@@ -1,0 +1,18 @@
+v1.o (2018)
+
+- hilangkan courser mouse (guna nircmd) ,/
+- Disablekan ENTER pada permulaan sebelum sensor activated ,/
+- Betulkan enter button using class javascript document.getElementById.class clock@none ,/
+- buat button shutdown pada key 8 ,/
+
+debug:-
+
+- bila startup kiosk selalu terjadi lari focus on top menyebabkan sensor x function
+
+
+v2.o (2019)
+
+- Besarkan font "You total is XX%" supaya senang dilihat ,/
+- program balik 32u4 supaya sensor callback abjad instead of number dan setiap kali activated mouse click supaya focus on top
+(solution using vbscript) ,/
+- rearangge touch & sensor key event dari nombor ke abjad (untuk penambahan function database)
